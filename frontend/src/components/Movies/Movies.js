@@ -2,9 +2,14 @@ import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getAllMovies } from "../../api-helpers/api-helpers";
 import MovieItem from "./MovieItem";
+import { useSelector } from "react-redux";
+import MainPage from "./MainPage";
+
 
 const Movies = () => {
   const [movies, setMovies] = useState();
+  const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
+  
   useEffect(() => {
     getAllMovies()
       .then((data) => setMovies(data.movies))
@@ -33,13 +38,27 @@ const Movies = () => {
       >
         {movies &&
           movies.map((movie, index) => (
-            <MovieItem
-              key={index}
-              id={movie._id}
-              posterUrl={movie.posterUrl}
-              releaseDate={movie.releaseDate}
-              title={movie.title}
-            />
+
+            isAdminLoggedIn ? (
+              <MainPage
+                id={movie.id}
+                title={movie.title}
+                posterUrl={movie.posterUrl}
+                releaseDate={movie.releaseDate}
+                key={index}
+              />
+            ) : (
+              <MovieItem
+                key={index}
+                id={movie._id}
+                posterUrl={movie.posterUrl}
+                releaseDate={movie.releaseDate}
+                title={movie.title}
+              />
+            )
+
+
+            
           ))}
       </Box>
     </Box>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllMovies } from "../api-helpers/api-helpers";
 import MovieItem from "./Movies/MovieItem";
+import MainPage from "./Movies/MainPage";
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
@@ -38,7 +39,7 @@ const HomePage = () => {
           movies
             .slice(0, 4)
             .map((movie, index) => (
-              <MovieItem
+              <MainPage
                 id={movie.id}
                 title={movie.title}
                 posterUrl={movie.posterUrl}
@@ -54,7 +55,7 @@ const HomePage = () => {
           variant="outlined"
           sx={{ margin: "auto", color: "#2b2d42" }}
         >
-          View All Movies
+          To Book Movies Click Here
         </Button>
       </Box>
     </Box>

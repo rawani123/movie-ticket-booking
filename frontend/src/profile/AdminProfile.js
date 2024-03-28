@@ -57,6 +57,7 @@ const AdminProfile = () => {
               <List>
                 {admin.addedMovies.map((movie, index) => (
                   <ListItem
+                  key={index}
                     sx={{
                       bgcolor: "#00d386",
                       color: "white",
@@ -65,6 +66,7 @@ const AdminProfile = () => {
                     }}
                   >
                     <ListItemText
+                    key={index}
                       sx={{ margin: 1, width: "auto", textAlign: "left" }}
                     >
                       Movie: {movie.title}

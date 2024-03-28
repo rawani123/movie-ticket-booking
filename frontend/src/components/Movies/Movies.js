@@ -9,6 +9,7 @@ import MainPage from "./MainPage";
 const Movies = () => {
   const [movies, setMovies] = useState();
   const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
+  const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
   
   useEffect(() => {
     getAllMovies()
@@ -37,29 +38,30 @@ const Movies = () => {
         flexWrap={"wrap"}
       >
         {movies &&
-          movies.map((movie, index) => (
+  movies.map((movie, index) => {
+    if (isAdminLoggedIn || !isUserLoggedIn  ) {
+      return (
+        <MainPage
+          id={movie.id}
+          title={movie.title}
+          posterUrl={movie.posterUrl}
+          releaseDate={movie.releaseDate}
+          key={index}
+        />
+      );
+    } else {
+      return (
+        <MovieItem
+          key={index}
+          id={movie._id}
+          posterUrl={movie.posterUrl}
+          releaseDate={movie.releaseDate}
+          title={movie.title}
+        />
+      );
+    }
+  })}
 
-            isAdminLoggedIn ? (
-              <MainPage
-                id={movie.id}
-                title={movie.title}
-                posterUrl={movie.posterUrl}
-                releaseDate={movie.releaseDate}
-                key={index}
-              />
-            ) : (
-              <MovieItem
-                key={index}
-                id={movie._id}
-                posterUrl={movie.posterUrl}
-                releaseDate={movie.releaseDate}
-                title={movie.title}
-              />
-            )
-
-
-            
-          ))}
       </Box>
     </Box>
   );

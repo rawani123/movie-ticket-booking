@@ -17,11 +17,17 @@ import { adminActions } from "../../store/admin-slice";
 const Header = () => {
   const navigate = useNavigate();
   const [selectedMovie, setSelectedMovie] = useState("");
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(0);
+  const [activateTab, setActivateTab] = useState(false);
   const [data, setData] = useState([]);
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
   const dispatch = useDispatch();
+
+  setTimeout(()=>{
+    setActivateTab(true)
+},100)
+
   useEffect(() => {
     getAllMovies()
       .then((data) => setData(data))
@@ -72,47 +78,42 @@ const Header = () => {
           />
         </Box>
         <Box display="flex">
-          <Tabs
-            onChange={(e, val) => setValue(val)}
-            value={value}
-            textColor="inherit"
-          >
-            {!isAdminLoggedIn && !isUserLoggedIn && (
-              <>
-                {" "}
-                <Tab to="/auth" LinkComponent={NavLink} label="Auth" />
-                <Tab to="/admin" LinkComponent={NavLink} label="Admin" />
-              </>
-            )}
+        <Tabs onChange={handleChange} value={value} textColor="inherit">
+  {(!isAdminLoggedIn && !isUserLoggedIn && activateTab) ? (
+    [
+      <Tab key="auth" to="/auth" LinkComponent={NavLink} label="Auth" />,
+      <Tab key="admin" to="/admin" LinkComponent={NavLink} label="Admin" />
+    ]
+  ) : null}
 
-            {isUserLoggedIn && (
-              <>
-                {" "}
-                <Tab LinkComponent={Link} to="/user" label="user" />
-                <Tab
-                  onClick={() => dispatch(userActions.logout())}
-                  LinkComponent={Link}
-                  to="/"
-                  label="Logout"
-                />
-              </>
-            )}
+  {isUserLoggedIn && (
+    [
+      <Tab key="user" LinkComponent={Link} to="/user" label="User" />,
+      <Tab
+        key="logout-user"
+        onClick={handleLogout} // Assuming handleLogout is a function to handle logout
+        LinkComponent={Link}
+        to="/"
+        label="Logout"
+      />
+    ]
+  )}
 
-            {isAdminLoggedIn && (
-              <>
-                {" "}
-                <Tab LinkComponent={Link} to="/profile" label="Profile" />
-                <Tab LinkComponent={Link} to="/add" label="Add Movie" />
-                <Tab
-                  onClick={() => dispatch(adminActions.logout())}
-                  LinkComponent={Link}
-                  to="/"
-                  label="Logout"
-                />
-              </>
-            )}
-          </Tabs>
-        </Box>
+  {isAdminLoggedIn && (
+    [
+      <Tab key="profile" LinkComponent={Link} to="/profile" label="Profile" />,
+      <Tab key="add" LinkComponent={Link} to="/add" label="Add Movie" />,
+      <Tab
+        key="logout-admin"
+        onClick={handleLogout} // Assuming handleLogout is a function to handle logout
+        LinkComponent={Link}
+        to="/"
+        label="Logout"
+      />
+    ]
+  )}
+</Tabs>
+    </Box>
       </Toolbar>
     </AppBar>
   );

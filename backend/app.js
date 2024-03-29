@@ -17,9 +17,10 @@ app.use("/admin", adminRouter);
 app.use("/movie", movieRouter);
 app.use("/booking", bookingsRouter);
 
+
 mongoose
   .connect(
-    "mongodb+srv://aniruddha212074101:ani@cluster0.qyw2pvd.mongodb.net/?retryWrites=true&w=majority"
+    process.env.DATABASE_URL
   )
   .then(() =>
     app.listen(5000, () =>
@@ -27,3 +28,5 @@ mongoose
     )
   )
   .catch((e) => console.log(e));
+
+

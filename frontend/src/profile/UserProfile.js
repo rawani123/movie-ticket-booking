@@ -30,6 +30,8 @@ const UserProfile = () => {
     deleteBooking(id)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
+
+    window.location.reload();
   };
   return (
     <Box width={"100%"} display="flex">
